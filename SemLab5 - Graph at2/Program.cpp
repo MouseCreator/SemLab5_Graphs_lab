@@ -29,6 +29,7 @@ void Program::init_window()
 void Program::init_font()
 {
 	this->font.loadFromFile("Fonts//prstart.ttf");
+	this->button_font.loadFromFile("Fonts//prstart.ttf");
 }
 bool Program::mouse_on_screen() {
 	sf::Vector2i pos = this->mouse.getPosition(*this->window);
@@ -50,7 +51,7 @@ void Program::update_edges() {
 }
 void Program::input()
 {
-	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus())
+	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and !this->using_ui())
 	{
 		if (keyboard.isKeyPressed(sf::Keyboard::LControl))
 		{
@@ -69,6 +70,7 @@ void Program::input()
 		else if (keyboard.isKeyPressed(sf::Keyboard::LShift))
 		{
 			Node* to_delete = is_over_node();
+			delete_edge();
 			bool check_edges = true;
 			if (to_delete) {
 				while (check_edges)
@@ -152,7 +154,21 @@ void Program::input()
 		
 	}
 }
-
+void Program::delete_edge() {
+	List_edges* edge_to_delete = nullptr;
+	List_edges* current = all_edges;
+	while (current) {
+		if (current->edge->contains_mouse_position(mouse_position()))
+		{
+			edge_to_delete = current;
+			break;
+		}
+		current = current->next;
+	}
+	if (edge_to_delete) {
+		pop_edge(edge_to_delete->edge);
+	}
+}
 Node* Program::is_over_node()
 {
 	size_t size = this->nodes.size();
@@ -177,12 +193,22 @@ Node* Program::is_over_node(Node* exception) {
 	}
 	return nullptr;
 }
-
+sf::Vector2f Program::mouse_position() {
+	return sf::Vector2f(this->mouse.getPosition(*this->window).x, this->mouse.getPosition(*this->window).y);
+}
+bool Program::using_ui()
+{
+	if (mouse_position().x > tab.get_bounds().x and mouse_position().y > tab.get_bounds().y)
+		return true;
+	return false;
+}
 Program::Program(bool graph_mode, short input_mode)
 {
 	this->graph_mode = graph_mode;
+	this->current_weight = 1;
 	this->init_window();
 	this->init_font();
+	this->tab = Tab(this->window, &this->button_font);
 	this->active_edge = nullptr;
 	this->active_node = nullptr;
 	switch (input_mode) {
@@ -211,6 +237,7 @@ const bool Program::get_window_opened() const
 void Program::update()
 {
 	this->input();
+	this->tab.update(this->mouse_position());
 	this->poll_events();
 }
 
@@ -226,5 +253,6 @@ void Program::render()
 	for (int i = 0; i < this->nodes.size(); i++) {
 		this->nodes[i]->render(this->window);
 	}
+	this->tab.render(this->window);
 	this->window->display();
 }

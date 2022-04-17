@@ -2,11 +2,12 @@
 #include "Header.h"
 #include "Node.h"
 #include "Edge.h"
-
+#include "Tab.h"
 class Program
 {
 private:
 	sf::RenderWindow* window;
+	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
 		Edge *edge = nullptr;
@@ -19,6 +20,8 @@ private:
 	sf::VideoMode video_mode;
 	sf::Mouse mouse;
 	sf::Font font;
+	sf::Font button_font;
+	Tab tab;
 	sf::Keyboard keyboard;
 	Node* active_node;
 	Edge* active_edge;
@@ -30,6 +33,7 @@ private:
 	void init_window();
 	void init_font();
 	void input();
+	void delete_edge();
 	bool mouse_on_screen();
 	std::vector<Node*> nodes;
 	sf::Vector2i last_position;
@@ -38,9 +42,10 @@ private:
 	void pop_edge(Edge* edge);
 	void clear_list();
 	void establish_edge();
-	Edge* is_over_edge();
 	Node* is_over_node();
 	Node* is_over_node(Node* exception);
+	sf::Vector2f mouse_position();
+	bool using_ui();
 
 public:
 	Program(bool graph_mode, short input_mode);

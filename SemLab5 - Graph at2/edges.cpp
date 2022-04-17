@@ -3,7 +3,7 @@
 void Program::add_edge(Node* beginning) {
 	List_edges* to_add = new List_edges;
 	to_add->edge = new Edge();
-	to_add->edge->set_beginning(beginning);
+	to_add->edge->set_beginning(beginning, &this->font, this->current_weight);
 	to_add->next = this->all_edges;
 	this->all_edges = to_add;
 }
@@ -45,9 +45,3 @@ void Program::establish_edge()
 	this->all_edges->node2 = this->all_edges->edge->get_ending();
 }
 
-Edge* Program::is_over_edge()
-{
-	List_edges* current = all_edges;
-
-	return nullptr;
-}
