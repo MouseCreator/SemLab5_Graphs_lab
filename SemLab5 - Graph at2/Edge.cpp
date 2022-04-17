@@ -32,9 +32,8 @@ void Edge::set_beginning(Node* beginning, sf::Font* font, int weight)
 
 bool Edge::contains_mouse_position(sf::Vector2f mouse_position)
 {
-	float delta_x = this->ending->get_position().x - this->beginning->get_position().x;
-	float delta_y = this->ending->get_position().y - this->beginning->get_position().y;
-
+	if (this->text.getGlobalBounds().contains(mouse_position))
+		return true;
 	return false;
 }
 

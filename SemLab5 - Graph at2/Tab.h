@@ -8,14 +8,14 @@ private:
 	TabButton tab1;
 	TabButton tab2;
 	sf::Font font;
-	void init_buttons();
+	void init_buttons(sf::Font* button_font);
 	void init_background(sf::RenderWindow* window);
 public:
 	Tab() { }
 	~Tab() { }
 	Tab(sf::RenderWindow* window, sf::Font* button_font) {
 		init_background(window);
-		init_buttons();
+		init_buttons(button_font);
 	}
 	sf::Vector2i get_bounds();
 	void update(sf::Vector2f mouse_pos) {

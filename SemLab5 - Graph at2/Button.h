@@ -4,6 +4,7 @@ class Button
 {
 private:
 	sf::RectangleShape shape;
+	sf::Text text;
 	bool selected;
 	bool was_selected;
 public:
