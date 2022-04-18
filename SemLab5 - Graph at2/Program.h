@@ -7,6 +7,8 @@ class Program
 {
 private:
 	sf::RenderWindow* window;
+	sf::Clock clock;
+	float min_delay = 0.13;
 	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
@@ -33,6 +35,7 @@ private:
 	void init_window();
 	void init_font();
 	void input();
+	bool text_bar_input();
 	void delete_edge();
 	bool mouse_on_screen();
 	std::vector<Node*> nodes;
@@ -41,6 +44,7 @@ private:
 	void update_edges();
 	void pop_edge(Edge* edge);
 	void clear_list();
+	void update_current_weight();
 	void establish_edge();
 	Node* is_over_node();
 	Node* is_over_node(Node* exception);

@@ -17,7 +17,7 @@ Button::Button(sf::Vector2f position, sf::Vector2f size, std::string text, sf::F
 	this->text.setString(text);
 	this->text.setPosition(sf::Vector2f(this->shape.getPosition().x + 4.f, this->shape.getPosition().y + 4.f));
 	this->text.setFillColor(sf::Color::Black);
-	this->text.setCharacterSize(8);
+	this->text.setCharacterSize(12);
 	selected = false;
 	was_selected = false;
 }

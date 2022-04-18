@@ -29,7 +29,7 @@ void Program::init_window()
 void Program::init_font()
 {
 	this->font.loadFromFile("Fonts//prstart.ttf");
-	this->button_font.loadFromFile("Fonts//prstart.ttf");
+	this->button_font.loadFromFile("Fonts//Lato-Black.ttf");
 }
 bool Program::mouse_on_screen() {
 	sf::Vector2i pos = this->mouse.getPosition(*this->window);
@@ -51,6 +51,13 @@ void Program::update_edges() {
 }
 void Program::input()
 {
+	if (text_bar_input()) return;
+	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
+		if (this->tab.text_bar_under_mouse(mouse_position())) {
+			this->tab.set_text_bar_active(true);
+			this->tab.update_text_bar('|');
+		}
+	}
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and !this->using_ui())
 	{
 		if (keyboard.isKeyPressed(sf::Keyboard::LControl))

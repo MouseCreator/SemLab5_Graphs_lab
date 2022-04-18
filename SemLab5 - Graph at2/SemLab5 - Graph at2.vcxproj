@@ -146,6 +146,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Tab.cpp" />
+    <ClCompile Include="TextBarInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
