@@ -55,7 +55,7 @@ void Program::input()
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
 		if (this->tab.text_bar_under_mouse(mouse_position())) {
 			this->tab.set_text_bar_active(true);
-			this->tab.update_text_bar('|');
+			this->tab.add_column_to_text_bar();
 		}
 	}
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and !this->using_ui())
@@ -243,6 +243,7 @@ const bool Program::get_window_opened() const
 
 void Program::update()
 {
+	this->delta_time = this->clock.restart().asSeconds();
 	this->input();
 	this->tab.update(this->mouse_position());
 	this->poll_events();

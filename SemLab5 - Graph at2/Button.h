@@ -15,37 +15,10 @@ public:
 		return this->shape.getGlobalBounds().contains(mouse_pos);
 	}
 	bool is_selected(sf::Vector2f mouse_position);
-	void push_text(char ch) {
-		if (this->text.getString().toAnsiString().length() < 12) //12???
-		{
-			if (ch != '|')
-			{
-				std::string str = "";
-				for (int i = 0; i < text.getString().toAnsiString().length() - 1; i++)
-				{
-					str += text.getString().toAnsiString()[i];
-				}
-				this->text.setString(str += ch);
-			}
-			this->text.setString(this->text.getString().toAnsiString() += '|');
-		}
-		
-	}
 	void set_text(std::string text) {
 		this->text.setString(text);
 	}
-	void erase_text() {
-		if (this->text.getString().toAnsiString().length() > 1)
-		{
-			std::string str = "";
-			for (int i = 0; i < text.getString().toAnsiString().length() - 2; i++)
-			{
-				str += text.getString().toAnsiString()[i];
-			}
-			str += '|';
-			text.setString(str);
-		}
-	}
+	
 	Button() {
 
 	}
@@ -78,6 +51,7 @@ class TextBar : public Button
 {
 private:
 	bool is_active = false;
+	std::string my_text;
 public:
 	TextBar() {}
 	~TextBar() {}
@@ -89,5 +63,21 @@ public:
 	}
 	void set_is_active(bool state) {
 		this->is_active = state;
+	}
+	void erase_text() {
+		if (my_text.size() > 0) {
+			my_text = my_text.substr(0, my_text.size() - 1);
+		}
+		this->set_text(my_text + '|');
+	}
+	void push_text(char ch) {
+		my_text += ch;
+		this->set_text(my_text + '|');
+	}
+	void add_column() {
+		this->set_text(my_text + '|');
+	}
+	std::string get_text() {
+		return this->my_text;
 	}
 };

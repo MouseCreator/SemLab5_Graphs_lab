@@ -8,7 +8,8 @@ class Program
 private:
 	sf::RenderWindow* window;
 	sf::Clock clock;
-	float min_delay = 0.13;
+	float min_delay = 0.25;
+	float delta_time;
 	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
