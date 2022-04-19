@@ -80,4 +80,8 @@ public:
 	std::string get_text() {
 		return this->my_text;
 	}
+	void update_text(std::string str) {
+		this->my_text = str;
+		this->set_text(my_text);
+	}
 };

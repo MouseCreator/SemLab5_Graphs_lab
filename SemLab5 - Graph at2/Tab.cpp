@@ -45,7 +45,7 @@ void Tab::render(sf::RenderTarget* target) {
 	target->draw(this->background);
 	this->tab1.render(target);
 	this->tab2.render(target);
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < num_deco_texts; i++) {
 		target->draw(deco_texts[i]);
 	}
 	this->text_box.render(target);

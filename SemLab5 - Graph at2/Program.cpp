@@ -30,6 +30,11 @@ void Program::init_font()
 {
 	this->font.loadFromFile("Fonts//prstart.ttf");
 	this->button_font.loadFromFile("Fonts//Lato-Black.ttf");
+	
+}
+
+void Program::init_texture() {
+	this->arrow_texture.loadFromFile("Icons//Arrow.png");
 }
 bool Program::mouse_on_screen() {
 	sf::Vector2i pos = this->mouse.getPosition(*this->window);
@@ -49,118 +54,7 @@ void Program::update_edges() {
 		current = current->next;
 	}
 }
-void Program::input()
-{
-	if (text_bar_input()) return;
-	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
-		if (this->tab.text_bar_under_mouse(mouse_position())) {
-			this->tab.set_text_bar_active(true);
-			this->tab.add_column_to_text_bar();
-		}
-	}
-	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and !this->using_ui())
-	{
-		if (keyboard.isKeyPressed(sf::Keyboard::LControl))
-		{
-			if (this->active_node) {
-				this->active_node->move(this->mouse.getPosition(*this->window));
-				update_edges();
-			}
-			else {
-				this->active_node = is_over_node();
-				if (this->active_node) {
-					this->last_position = sf::Vector2i(active_node->get_position().x, active_node->get_position().y);
-				}
-				
-			}
-		}
-		else if (keyboard.isKeyPressed(sf::Keyboard::LShift))
-		{
-			Node* to_delete = is_over_node();
-			delete_edge();
-			bool check_edges = true;
-			if (to_delete) {
-				while (check_edges)
-				{
-					check_edges = false;
-					List_edges* current = all_edges;
-					while (current) {
-						if (current->edge->get_beginning() == to_delete or current->edge->get_ending() == to_delete)
-						{
-							pop_edge(current->edge); check_edges = true; break;
-						}
-						current = current->next;
-					}
-				}
-				int j = 0;
-				int to_delete_id = to_delete->get_id();
-				while (nodes[j] != to_delete)
-				{
-					j++;
-				}
-				delete this->nodes[j];
-				this->nodes.erase(nodes.begin() + j);
-				for (int i = 0; i < this->nodes.size(); i++) {
-					if (this->nodes[i]->get_id() > to_delete_id) {
-						this->nodes[i]->decrease_id();
-					}
-				}
-			}
-		}
-		else
-		{
-			if (this->active_node == nullptr and this->active_edge == nullptr) {
-				this->active_node = is_over_node();
-				if (this->active_node) {
-					this->add_edge(this->active_node);
-					this->active_node = nullptr;
-					this->active_edge = this->all_edges->edge;
-				}
-				else {
-					int new_number = 0;
-					if (nodes.size() > 0)
-					{
-						new_number = nodes.back()->get_id() + 1;
-					}
-					this->nodes.push_back(new Node(new_number, this->mouse.getPosition(*this->window), &this->font));
-					this->active_node = nodes.back();
-				}
 
-			}
-			if (this->active_node) {
-				this->active_node->move(this->mouse.getPosition(*this->window));
-			}
-			if (this->active_edge) {
-				this->active_edge->installation(this->mouse.getPosition(*this->window));
-			}
-		}
-	}
-	else
-	{
-		if (this->active_node) {
-			if (is_over_node(this->active_node)) {
-				this->active_node->move(this->last_position);
-				update_edges();
-			}
-			this->active_node = nullptr;
-			this->active_edge = nullptr;
-		}
-		if (this->active_edge) {
-			Node* temp = is_over_node();
-			if (temp and temp != this->active_edge->get_beginning())
-			{
-				this->active_edge->end_installation(temp);
-				this->establish_edge();
-				this->active_edge = nullptr;
-			}
-			else {
-				this->pop_edge(this->all_edges->edge);
-				this->active_edge = nullptr;
-			}
-		}
-		
-	}
-}
 void Program::delete_edge() {
 	List_edges* edge_to_delete = nullptr;
 	List_edges* current = all_edges;
@@ -212,8 +106,10 @@ bool Program::using_ui()
 Program::Program(bool graph_mode, short input_mode)
 {
 	this->graph_mode = graph_mode;
+	this->oriented_graph = true;
 	this->current_weight = 1;
 	this->init_window();
+	this->init_texture();
 	this->init_font();
 	this->tab = Tab(this->window, &this->button_font);
 	this->active_edge = nullptr;

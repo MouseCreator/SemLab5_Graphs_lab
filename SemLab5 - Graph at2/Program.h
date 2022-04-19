@@ -10,6 +10,7 @@ private:
 	sf::Clock clock;
 	float min_delay = 0.25;
 	float delta_time;
+	bool oriented_graph;
 	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
@@ -24,6 +25,7 @@ private:
 	sf::Mouse mouse;
 	sf::Font font;
 	sf::Font button_font;
+	sf::Texture arrow_texture;
 	Tab tab;
 	sf::Keyboard keyboard;
 	Node* active_node;
@@ -35,6 +37,7 @@ private:
 	bool is_benchmark;
 	void init_window();
 	void init_font();
+	void init_texture();
 	void input();
 	bool text_bar_input();
 	void delete_edge();
@@ -51,6 +54,13 @@ private:
 	Node* is_over_node(Node* exception);
 	sf::Vector2f mouse_position();
 	bool using_ui();
+
+	void add_mode();
+	void move_mode();
+	void delete_mode();
+	void put_new_edge();
+
+	bool edge_exists(Node* from, Node* to);
 
 public:
 	Program(bool graph_mode, short input_mode);

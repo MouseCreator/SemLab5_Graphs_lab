@@ -3,7 +3,7 @@
 void Program::add_edge(Node* beginning) {
 	List_edges* to_add = new List_edges;
 	to_add->edge = new Edge();
-	to_add->edge->set_beginning(beginning, &this->font, this->current_weight);
+	to_add->edge->set_beginning(beginning, &this->font, this->current_weight, this->oriented_graph, &this->arrow_texture);
 	to_add->next = this->all_edges;
 	this->all_edges = to_add;
 }

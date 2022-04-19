@@ -1,6 +1,7 @@
 #pragma once
 #include "Header.h"
 #include "Button.h"
+const unsigned int num_deco_texts = 2;
 class Tab
 {
 private:
@@ -9,7 +10,7 @@ private:
 	TabButton tab2;
 	TextBar text_box;
 	sf::Font* font;
-	sf::Text deco_texts [2];
+	sf::Text deco_texts [num_deco_texts];
 	void init_buttons(sf::Font* button_font);
 	void init_deco_texts();
 	void init_background(sf::RenderWindow* window);
@@ -38,7 +39,7 @@ public:
 			this->text_box.erase_text();
 	}
 	void update_text_bar(std::string to_set) {
-		this->text_box.set_text(to_set);
+		this->text_box.update_text(to_set);
 	}
 	std::string get_text_bar_text() {
 		return this->text_box.get_text();
