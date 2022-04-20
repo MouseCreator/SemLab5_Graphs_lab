@@ -1,14 +1,17 @@
 #include "Tab.h"
 
-void Tab::init_buttons(sf::Font* button_font) {
+void Tab::init_buttons(sf::Font* button_font, sf::Texture* check_box_texture) {
 	this->font = button_font;
 	sf::Vector2f beginning = this->background.getPosition();
 	sf::Vector2f tab_offset = sf::Vector2f(20.f, 20.f);
-	this->tab1 = TabButton(beginning + tab_offset, sf::Vector2f(64, 20), "Add", button_font, 0);
+	this->tab1 = TabButton(beginning + tab_offset, sf::Vector2f(72, 20), "Convert", button_font, 0);
 	tab_offset = sf::Vector2f(20.f, 60.f);
-	this->tab2 = TabButton(beginning + tab_offset, sf::Vector2f(64, 20), "Edit", button_font, 1);
+	this->tab2 = TabButton(beginning + tab_offset, sf::Vector2f(72, 20), "Edit", button_font, 1);
 	tab_offset = sf::Vector2f(100.f, 20.f);
 	this->text_box = TextBar(beginning + tab_offset, sf::Vector2f(128, 32), "Enter weight", button_font);
+	this->oriented_box = Checkbox("Oriented", font);
+	tab_offset = sf::Vector2f(100.f, 60.f);
+	this->oriented_box.init_sprite(beginning + tab_offset, check_box_texture);
 
 }
 
@@ -49,4 +52,5 @@ void Tab::render(sf::RenderTarget* target) {
 		target->draw(deco_texts[i]);
 	}
 	this->text_box.render(target);
+	this->oriented_box.render(target);
 }

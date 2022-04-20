@@ -35,6 +35,7 @@ void Program::init_font()
 
 void Program::init_texture() {
 	this->arrow_texture.loadFromFile("Icons//Arrow.png");
+	this->check_box_texture.loadFromFile("Icons//Checkbox.png");
 }
 bool Program::mouse_on_screen() {
 	sf::Vector2i pos = this->mouse.getPosition(*this->window);
@@ -68,6 +69,9 @@ void Program::delete_edge() {
 	}
 	if (edge_to_delete) {
 		pop_edge(edge_to_delete->edge);
+	}
+	if (all_edges == nullptr) {
+		this->tab.set_check_box_able(true, 3);
 	}
 }
 Node* Program::is_over_node()
@@ -106,12 +110,12 @@ bool Program::using_ui()
 Program::Program(bool graph_mode, short input_mode)
 {
 	this->graph_mode = graph_mode;
-	this->oriented_graph = true;
+	this->oriented_graph = false;
 	this->current_weight = 1;
 	this->init_window();
 	this->init_texture();
 	this->init_font();
-	this->tab = Tab(this->window, &this->button_font);
+	this->tab = Tab(this->window, &this->button_font, &this->check_box_texture);
 	this->active_edge = nullptr;
 	this->active_node = nullptr;
 	switch (input_mode) {
@@ -126,6 +130,7 @@ Program::~Program()
 {
 	delete this->window;
 	clear_list();
+	clear_structure();
 	for (int i = 0; i < nodes.size(); i++)
 	{
 		delete nodes[i];

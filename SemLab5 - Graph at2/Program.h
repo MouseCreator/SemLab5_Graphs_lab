@@ -3,12 +3,22 @@
 #include "Node.h"
 #include "Edge.h"
 #include "Tab.h"
+#include "Graph_structure.h"
+const short NODE_LIMIT = 32;
 class Program
 {
 private:
+	unsigned long graph_vector[NODE_LIMIT];
+	Graph_structure* graph_struct[NODE_LIMIT] = { nullptr };
+
+	void convert_to_vector();
+	void convert_to_structure();
+	void clear_structure();
+	void add_to_structure(int id_1, int id_2, int weight);
+
 	sf::RenderWindow* window;
 	sf::Clock clock;
-	float min_delay = 0.25;
+	const float min_delay = 0.25f;
 	float delta_time;
 	bool oriented_graph;
 	int current_weight;
@@ -26,6 +36,7 @@ private:
 	sf::Font font;
 	sf::Font button_font;
 	sf::Texture arrow_texture;
+	sf::Texture check_box_texture;
 	Tab tab;
 	sf::Keyboard keyboard;
 	Node* active_node;

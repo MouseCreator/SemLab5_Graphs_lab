@@ -24,7 +24,7 @@ public:
 		return this->shape.getRadius();
 	}
 	void move(sf::Vector2i position) {
-		this->shape.setPosition(position.x, position.y);
+		this->shape.setPosition(float(position.x), float(position.y));
 		this->text.setPosition(this->shape.getPosition());
 	}
 	void render(sf::RenderTarget* target) {

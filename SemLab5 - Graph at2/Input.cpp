@@ -2,11 +2,31 @@
 
 void Program::input()
 {
+	static float delay = 0.f;
+	static bool was_pressed = false;
+	if (was_pressed == true) {
+		delay += delta_time;
+		if (delay > min_delay) {
+			was_pressed = false;
+			delay -= min_delay;
+		}
+	}
 	if (text_bar_input()) return;
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
 		if (this->tab.text_bar_under_mouse(mouse_position())) {
 			this->tab.set_text_bar_active(true);
 			this->tab.add_column_to_text_bar();
+		}
+		int button_activated = this->tab.get_button_activated(mouse_position());
+		if (was_pressed == false)
+		{
+			if (button_activated == 1) {
+				convert_to_structure();
+			}
+			else if (button_activated == 3) {
+				this->oriented_graph = this->tab.check_box_state(3);
+			}
+			was_pressed = true;
 		}
 	}
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and !this->using_ui())
@@ -53,6 +73,9 @@ void Program::put_new_edge() {
 	else {
 		this->pop_edge(this->all_edges->edge);
 		this->active_edge = nullptr;
+	}
+	if (all_edges != nullptr) {
+		this->tab.set_check_box_able(false, 3);
 	}
 }
 
@@ -131,7 +154,7 @@ void Program::add_mode() {
 			{
 				new_number = nodes.back()->get_id() + 1;
 			}
-			this->nodes.push_back(new Node(new_number, this->mouse.getPosition(*this->window), &this->font));
+			this->nodes.emplace_back(new Node(new_number, this->mouse.getPosition(*this->window), &this->font));
 			this->active_node = nodes.back();
 		}
 

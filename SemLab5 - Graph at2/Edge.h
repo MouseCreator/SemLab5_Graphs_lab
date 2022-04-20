@@ -32,6 +32,9 @@ public:
 	Node* get_ending() {
 		return this->ending;
 	}
+	int get_weight() {
+		return this->weight;
+	}
 	void set_beginning(Node* beginning, sf::Font *font, int weight, bool oriented, sf::Texture* arrow_texture);
 	bool contains_mouse_position(sf::Vector2f mouse_position);
 	Edge();
