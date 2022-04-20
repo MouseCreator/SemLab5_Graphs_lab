@@ -71,7 +71,7 @@ void Program::delete_edge() {
 		pop_edge(edge_to_delete->edge);
 	}
 	if (all_edges == nullptr) {
-		this->tab.set_check_box_able(true, 3);
+		this->tab.oriented_check_box()->set_avaliable(true);
 	}
 }
 Node* Program::is_over_node()

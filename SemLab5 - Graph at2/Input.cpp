@@ -13,9 +13,10 @@ void Program::input()
 	}
 	if (text_bar_input()) return;
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
-		if (this->tab.text_bar_under_mouse(mouse_position())) {
-			this->tab.set_text_bar_active(true);
-			this->tab.add_column_to_text_bar();
+		if (this->tab.text_box()->is_selected(mouse_position())) 
+		{
+			this->tab.text_box()->set_is_active(true);
+			this->tab.text_box()->add_column();
 		}
 		int button_activated = this->tab.get_button_activated(mouse_position());
 		if (was_pressed == false)
@@ -24,7 +25,9 @@ void Program::input()
 				convert_to_structure();
 			}
 			else if (button_activated == 3) {
-				this->oriented_graph = this->tab.check_box_state(3);
+				this->tab.oriented_check_box()->change_state();
+				this->oriented_graph = tab.oriented_check_box()->get_state();
+					
 			}
 			was_pressed = true;
 		}
@@ -75,7 +78,7 @@ void Program::put_new_edge() {
 		this->active_edge = nullptr;
 	}
 	if (all_edges != nullptr) {
-		this->tab.set_check_box_able(false, 3);
+		this->tab.oriented_check_box()->set_avaliable(false);
 	}
 }
 

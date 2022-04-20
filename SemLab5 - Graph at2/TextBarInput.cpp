@@ -1,24 +1,24 @@
 #include "Program.h"
 
 bool Program::text_bar_input() {
-	if (this->tab.get_text_bar_active() == false) return false;
+	if (this->tab.text_box()->get_is_active() == false) return false;
 	static float time_passed = 0.f;
 	static bool waiting = false;
 	if (!waiting) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) { this->tab.update_text_bar('0'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) { this->tab.update_text_bar('1'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) { this->tab.update_text_bar('2'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) { this->tab.update_text_bar('3'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) { this->tab.update_text_bar('4'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) { this->tab.update_text_bar('5'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6)) { this->tab.update_text_bar('6'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) { this->tab.update_text_bar('7'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) { this->tab.update_text_bar('8'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) { this->tab.update_text_bar('9'); waiting = true; }
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) { this->tab.update_text_bar(-1); waiting = true; }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) { this->tab.text_box()->update_text('0'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) { this->tab.text_box()->update_text('1'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) { this->tab.text_box()->update_text('2'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) { this->tab.text_box()->update_text('3'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) { this->tab.text_box()->update_text('4'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) { this->tab.text_box()->update_text('5'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6)) { this->tab.text_box()->update_text('6'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) { this->tab.text_box()->update_text('7'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) { this->tab.text_box()->update_text('8'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) { this->tab.text_box()->update_text('9'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) { this->tab.text_box()->update_text(-1); waiting = true; }
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 			update_current_weight(); 
-			this->tab.set_text_bar_active(false);
+			this->tab.text_box()->set_is_active(false);
 		}
 	}
 	else
@@ -48,7 +48,7 @@ bool Program::text_bar_input() {
 	return true;
 }
 void Program::update_current_weight() {
-	std::string str = this->tab.get_text_bar_text();
+	std::string str = this->tab.text_box()->get_text();
 	if (str == "") {
 		current_weight = 0;
 	}
@@ -58,5 +58,5 @@ void Program::update_current_weight() {
 	else {
 		this->current_weight = stoi(str);
 	}
-	this->tab.update_text_bar(std::to_string(this->current_weight));
+	this->tab.text_box()->update_text(std::to_string(this->current_weight));
 }

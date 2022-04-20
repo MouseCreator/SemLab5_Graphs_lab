@@ -70,6 +70,12 @@ public:
 		}
 		this->set_text(my_text + '|');
 	}
+	void update_text(char ch) {
+		if (ch == -1)
+			erase_text();
+		else
+			push_text(ch);
+	}
 	void push_text(char ch) {
 		my_text += ch;
 		this->set_text(my_text + '|');
