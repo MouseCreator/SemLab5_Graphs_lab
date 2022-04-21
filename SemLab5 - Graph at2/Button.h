@@ -29,24 +29,6 @@ public:
 	}
 };
 
-class TabButton : public Button
-{
-private:
-	int tab_number;
-public:
-	TabButton(sf::Vector2f position, sf::Vector2f size, std::string text, sf::Font *font, int tab_id)
-		: Button(position, size, text, font) {
-		this->tab_number = tab_id;
-	}
-	void activate(int &current_tab) {
-		current_tab = tab_number;
-	}
-	TabButton() {
-
-	}
-	~TabButton() {
-	}
-};
 class TextBar : public Button
 {
 private:

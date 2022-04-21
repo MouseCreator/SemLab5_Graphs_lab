@@ -125,7 +125,11 @@ Program::Program(bool graph_mode, short input_mode)
 	default: std::cout << "Unknown input mode. Default: Iterational.\n";
 	}
 }
-
+void Program::clear_canvas() {
+	this->clear_list();
+	this->nodes.clear();
+	this->tab.oriented_check_box()->set_avaliable(true);
+}
 Program::~Program()
 {
 	delete this->window;

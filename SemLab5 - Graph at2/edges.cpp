@@ -37,6 +37,7 @@ void Program::clear_list()
 		current = current->next;
 		delete to_delete;
 	}
+	this->all_edges = nullptr;
 }
 
 void Program::establish_edge()

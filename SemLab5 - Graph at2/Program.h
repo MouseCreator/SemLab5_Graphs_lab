@@ -4,16 +4,17 @@
 #include "Edge.h"
 #include "Tab.h"
 #include "Graph_structure.h"
-const short NODE_LIMIT = 32;
+#include "Graphs.h"
 class Program
 {
 private:
-	unsigned long graph_vector[NODE_LIMIT];
-	Graph_structure* graph_struct[NODE_LIMIT] = { nullptr };
-
+	unsigned graph_vector[NODE_LIMIT];
+	int weights[NODE_LIMIT][NODE_LIMIT];
+	StructGraph structed_graph;
 	void convert_to_vector();
 	void convert_to_structure();
 	void clear_structure();
+	void clear_structure(Graph_structure** to_clear);
 	void add_to_structure(int id_1, int id_2, int weight);
 
 	sf::RenderWindow* window;
@@ -21,6 +22,7 @@ private:
 	const float min_delay = 0.25f;
 	float delta_time;
 	bool oriented_graph;
+	bool weight_mode;
 	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
@@ -53,8 +55,9 @@ private:
 	bool text_bar_input();
 	void delete_edge();
 	bool mouse_on_screen();
+	void clear_canvas();
 	std::vector<Node*> nodes;
-	sf::Vector2i last_position;
+	sf::Vector2f last_position;
 	void add_edge(Node* beginning);
 	void update_edges();
 	void pop_edge(Edge* edge);
@@ -65,13 +68,21 @@ private:
 	Node* is_over_node(Node* exception);
 	sf::Vector2f mouse_position();
 	bool using_ui();
-
+	Node* selected;
 	void add_mode();
 	void move_mode();
 	void delete_mode();
 	void put_new_edge();
 
+	//Put them in structure class???? :
+	void bfs_structure();
+	void bfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool *visited);
+	void dfs_structure();
+	void dfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool* visited);
+	Graph_structure* sort_by_weight(Graph_structure* beginning);
 	bool edge_exists(Node* from, Node* to);
+	Graph_structure* gen_queue(Graph_structure* beginning, bool* visited);
+	void pop_from_queue(Graph_structure** from);
 
 public:
 	Program(bool graph_mode, short input_mode);

@@ -4,15 +4,12 @@ void Program::input()
 {
 	static float delay = 0.f;
 	static bool was_pressed = false;
-	if (was_pressed == true) {
-		delay += delta_time;
-		if (delay > min_delay) {
-			was_pressed = false;
-			delay -= min_delay;
-		}
-	}
 	if (text_bar_input()) return;
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
+		if (this->active_node) {
+			this->active_node->move(this->last_position);
+			this->active_node = nullptr;
+		}
 		if (this->tab.text_box()->is_selected(mouse_position())) 
 		{
 			this->tab.text_box()->set_is_active(true);
@@ -21,16 +18,34 @@ void Program::input()
 		int button_activated = this->tab.get_button_activated(mouse_position());
 		if (was_pressed == false)
 		{
+			was_pressed = true;
 			if (button_activated == 1) {
-				convert_to_structure();
+				this->convert_to_structure();
+				this->tab.update_output_text("Converted!");
+			}
+			else if (button_activated == 2) {
+				this->clear_canvas();
 			}
 			else if (button_activated == 3) {
 				this->tab.oriented_check_box()->change_state();
 				this->oriented_graph = tab.oriented_check_box()->get_state();
 					
 			}
-			was_pressed = true;
+			else if (button_activated == 4) {
+				this->tab.weight_box()->change_state();
+				this->weight_mode = tab.weight_box()->get_state();
+
+			}
+			else if (button_activated == 5) {
+				this->bfs_structure();
+			}
+			else if (button_activated == 6) {
+				this->dfs_structure();
+			}
 		}
+	}
+	if (mouse.isButtonPressed(sf::Mouse::Left) == false) {
+		was_pressed = false;
 	}
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and !this->using_ui())
 	{
@@ -60,7 +75,6 @@ void Program::input()
 		if (this->active_edge) {
 			this->put_new_edge();
 		}
-
 	}
 }
 void Program::put_new_edge() {
@@ -98,13 +112,13 @@ bool Program::edge_exists(Node* from, Node* to) {
 }
 void Program::move_mode() {
 	if (this->active_node) {
-		this->active_node->move(this->mouse.getPosition(*this->window));
+		this->active_node->move(mouse_position());
 		update_edges();
 	}
 	else {
 		this->active_node = is_over_node();
 		if (this->active_node) {
-			this->last_position = sf::Vector2i(active_node->get_position().x, active_node->get_position().y);
+			this->last_position = sf::Vector2f(active_node->get_position().x, active_node->get_position().y);
 		}
 
 	}
@@ -135,7 +149,7 @@ void Program::delete_mode(){
 		}
 		delete this->nodes[j];
 		this->nodes.erase(nodes.begin() + j);
-		for (int i = 0; i < this->nodes.size(); i++) {
+		for (size_t i = 0; i < this->nodes.size(); i++) {
 			if (this->nodes[i]->get_id() > to_delete_id) {
 				this->nodes[i]->decrease_id();
 			}
@@ -163,7 +177,7 @@ void Program::add_mode() {
 
 	}
 	if (this->active_node) {
-		this->active_node->move(this->mouse.getPosition(*this->window));
+		this->active_node->move(mouse_position());
 	}
 	if (this->active_edge) {
 		this->active_edge->installation(this->mouse.getPosition(*this->window));

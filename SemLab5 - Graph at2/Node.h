@@ -23,7 +23,7 @@ public:
 	float get_radius() {
 		return this->shape.getRadius();
 	}
-	void move(sf::Vector2i position) {
+	void move(sf::Vector2f position) {
 		this->shape.setPosition(float(position.x), float(position.y));
 		this->text.setPosition(this->shape.getPosition());
 	}

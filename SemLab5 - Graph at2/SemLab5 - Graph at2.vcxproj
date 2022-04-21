@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BitVector.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="edges.cpp" />
+    <ClCompile Include="GraphStructure.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Graph_Functions.cpp" />
@@ -155,6 +157,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Checkbox.h" />
     <ClInclude Include="Edge.h" />
+    <ClInclude Include="Graphs.h" />
     <ClInclude Include="Graph_structure.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Node.h" />

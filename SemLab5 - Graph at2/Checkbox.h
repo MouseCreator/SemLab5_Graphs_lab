@@ -28,7 +28,7 @@ public:
 		this->checked = checked;
 		this->is_avaialable = is_avaliable;
 		this->text.setFont(*font);
-		this->text.setCharacterSize(8);
+		this->text.setCharacterSize(10);
 		this->text.setString(text);
 	}
 	bool is_under_mouse(sf::Vector2f mouse_position) {

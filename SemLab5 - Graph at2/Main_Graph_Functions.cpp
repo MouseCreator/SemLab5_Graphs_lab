@@ -21,10 +21,11 @@ void Program::convert_to_structure() {
 void Program::add_to_structure(int id_1, int id_2, int weight)
 {
 	Graph_structure* current = nullptr;
-	if (this->graph_struct[id_1]) {
-		current = graph_struct[id_1];
+	if (this->structed_graph.graph[id_1]) {
+		current = structed_graph.graph[id_1];
 		if (id_2 < current->edge_to) {
 			Graph_structure* to_add = new Graph_structure(id_2, weight, current);
+			structed_graph.graph[id_1] = to_add;
 			return;
 		}
 		while (current->next) {
@@ -37,7 +38,7 @@ void Program::add_to_structure(int id_1, int id_2, int weight)
 		current->next = new Graph_structure(id_2, weight);
 	}
 	else {
-		this->graph_struct[id_1] = new Graph_structure(id_2, weight, nullptr);
+		this->structed_graph.graph[id_1] = new Graph_structure(id_2, weight, nullptr);
 	}
 }
 
@@ -45,13 +46,25 @@ void Program::clear_structure() {
 	Graph_structure* current = nullptr;
 	Graph_structure* to_delete = current;
 	for (int i = 0; i < NODE_LIMIT; i++) {
-		if (current = graph_struct[i]) {
+		if (current = this->structed_graph.graph[i]) {
 			while (current) {
 				to_delete = current;
 				current = current->next;
 				delete to_delete;
 			}
-			this->graph_struct[i] = nullptr;
+			this->structed_graph.graph[i] = nullptr;
 		}
 	}
+}
+
+void Program::clear_structure(Graph_structure** to_clear)
+{
+	Graph_structure* current = (*to_clear);
+	Graph_structure* to_delete;
+	while (current) {
+		to_delete = current;
+		current = current->next;
+		delete to_delete;
+	}
+	to_clear = nullptr;
 }
