@@ -1,7 +1,10 @@
 #include "Program.h"
 
+void Program::convert_to_vector()
+{
+}
+
 void Program::convert_to_structure() {
-	this->clear_structure(); //if there was one
 	List_edges* current = this->all_edges;
 	int id_1 = 0;
 	int id_2 = 0;
@@ -10,61 +13,61 @@ void Program::convert_to_structure() {
 		id_1 = current->edge->get_beginning()->get_id();
 		id_2 = current->edge->get_ending()->get_id();
 		weight = current->edge->get_weight();
-		add_to_structure(id_1, id_2, weight);
+		this->structed_graph.add_to_structure(id_1, id_2, weight);
 		if (this->oriented_graph == false) {
-			add_to_structure(id_2, id_1, weight);
+			this->structed_graph.add_to_structure(id_2, id_1, weight);
 		}
 		current = current->next;
 	}
+	this->structed_graph.set_size(this->nodes.size());
+}
+void Program::dfs_structure() {
+	if (this->autoconvert) {
+		this->convert();
+	}
+	std::string to_show = "DFS: ";
+	int starter = 0;
+	bool visited[NODE_LIMIT] = { 0 };
+	if (this->selected) {
+		starter = this->selected->get_id();
+	}
+	if (this->structed_graph.get_size() > 0)
+	{
+		this->structed_graph.dfs_structure_recursive(starter, to_show, this->weight_mode, visited);
+	}
+	this->tab.update_output_text(to_show);
 }
 
-void Program::add_to_structure(int id_1, int id_2, int weight)
-{
-	Graph_structure* current = nullptr;
-	if (this->structed_graph.graph[id_1]) {
-		current = structed_graph.graph[id_1];
-		if (id_2 < current->edge_to) {
-			Graph_structure* to_add = new Graph_structure(id_2, weight, current);
-			structed_graph.graph[id_1] = to_add;
-			return;
-		}
-		while (current->next) {
-			if (current->next->edge_to < id_2) {
-				current->next = new Graph_structure(id_2, weight, current->next);
-				return;
-			}
-			current = current->next;
-		}
-		current->next = new Graph_structure(id_2, weight);
+void Program::bfs_structure() {
+	if (this->autoconvert) {
+		this->convert();
 	}
-	else {
-		this->structed_graph.graph[id_1] = new Graph_structure(id_2, weight, nullptr);
+	std::string to_show = "BFS: ";
+	bool visited[NODE_LIMIT] = { 0 };
+	int starter = 0;
+	if (this->selected) {
+		starter = this->selected->get_id();
+	}
+	if (this->structed_graph.get_size() > 0)
+	{
+		this->structed_graph.bfs_structure_recursive(starter, to_show, this->weight_mode, visited);
+	}
+	this->tab.update_output_text(to_show);
+}
+
+void Program::convert()
+{
+	if (this->to_vector) {
+		convert_to_vector();
+	}
+	else
+	{
+		this->clear_structure();
+		this->convert_to_structure();
 	}
 }
 
 void Program::clear_structure() {
-	Graph_structure* current = nullptr;
-	Graph_structure* to_delete = current;
-	for (int i = 0; i < NODE_LIMIT; i++) {
-		if (current = this->structed_graph.graph[i]) {
-			while (current) {
-				to_delete = current;
-				current = current->next;
-				delete to_delete;
-			}
-			this->structed_graph.graph[i] = nullptr;
-		}
-	}
+	this->structed_graph.clear();
 }
 
-void Program::clear_structure(Graph_structure** to_clear)
-{
-	Graph_structure* current = (*to_clear);
-	Graph_structure* to_delete;
-	while (current) {
-		to_delete = current;
-		current = current->next;
-		delete to_delete;
-	}
-	to_clear = nullptr;
-}

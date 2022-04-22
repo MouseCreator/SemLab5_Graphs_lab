@@ -58,6 +58,10 @@ public:
 	bool get_state() {
 		return this->checked;
 	}
+	void set_state(bool value) {
+		this->checked = value;
+		update_texture();
+	}
 	~Checkbox() {
 	}
 };

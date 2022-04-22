@@ -16,17 +16,26 @@ void Tab::init_buttons(sf::Font* button_font, sf::Texture* check_box_texture) {
 
 	tab_offset = sf::Vector2f(100.f, 20.f);
 	this->text_tab = TextBar(beginning + tab_offset, sf::Vector2f(128, 32), "Enter weight", button_font);
+
 	this->oriented_box = Checkbox("Oriented", font);
 	tab_offset = sf::Vector2f(100.f, 60.f);
 	this->oriented_box.init_sprite(beginning + tab_offset, check_box_texture);
+
 	this->weight_matters = Checkbox("Sort by weight", font);
-	tab_offset = sf::Vector2f(100.f, 90.f);
+	tab_offset += distance_between_btns;
 	this->weight_matters.init_sprite(beginning + tab_offset, check_box_texture);
+
+	this->to_vector = Checkbox("Bitvector mode", font);
+	tab_offset += distance_between_btns;
+	this->to_vector.init_sprite(beginning + tab_offset, check_box_texture);
+
+	this->auto_convert = Checkbox("Autoconvert", font);
+	tab_offset += distance_between_btns;
+	this->auto_convert.init_sprite(beginning + tab_offset, check_box_texture);
 
 	
 
 }
-
 void Tab::init_deco_texts() {
 	sf::Vector2f beginning = this->background.getPosition();
 	sf::Vector2f tab_offset = sf::Vector2f(100.f, 2.f);
@@ -51,6 +60,14 @@ void Tab::init_deco_texts() {
 	this->deco_texts[2].setCharacterSize(10);
 
 }
+
+void Tab::update(sf::Vector2f mouse_pos) {
+	this->convert_btn.update(mouse_pos);
+	this->dfs_btn.update(mouse_pos);
+	this->bfs_btn.update(mouse_pos);
+	this->clear_btn.update(mouse_pos);
+	this->text_tab.update(mouse_pos);
+}
 sf::Vector2i Tab::get_bounds()
 {
 	return sf::Vector2i(int(this->background.getPosition().x), int(this->background.getPosition().y));
@@ -59,7 +76,7 @@ sf::Vector2i Tab::get_bounds()
 void Tab::init_background(sf::RenderWindow* window)
 {
 	float width = 284.f;
-	float height = 256.f;
+	float height = 284.f;
 	this->background.setFillColor(sf::Color(200, 200, 255));
 	this->background.setPosition(window->getSize().x - width, window->getSize().y - height);
 	this->background.setSize(sf::Vector2f(width, height));
@@ -124,6 +141,8 @@ void Tab::render(sf::RenderTarget* target) {
 	this->text_tab.render(target);
 	this->oriented_box.render(target);
 	this->weight_matters.render(target);
+	this->auto_convert.render(target);
+	this->to_vector.render(target);
 	target->draw(this->output_text);
 }
 
@@ -148,6 +167,14 @@ Checkbox* Tab::oriented_check_box() {
 Checkbox* Tab::weight_box()
 {
 	return &this->weight_matters;
+}
+Checkbox* Tab::to_vector_box()
+{
+	return &this->to_vector;
+}
+Checkbox* Tab::autoconvert_box()
+{
+	return &this->auto_convert;
 }
 TextBar* Tab::text_box() {
 	return &this->text_tab;

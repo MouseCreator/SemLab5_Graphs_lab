@@ -56,6 +56,13 @@ void Program::update_edges() {
 	}
 }
 
+
+void Program::prepare_checkboxes() {
+	this->tab.oriented_check_box()->set_state(this->oriented_graph);
+	this->tab.weight_box()->set_state(this->weight_mode);
+	this->tab.autoconvert_box()->set_state(this->autoconvert);
+	this->tab.to_vector_box()->set_state(this->to_vector);
+}
 void Program::delete_edge() {
 	List_edges* edge_to_delete = nullptr;
 	List_edges* current = all_edges;
@@ -107,17 +114,27 @@ bool Program::using_ui()
 		return true;
 	return false;
 }
-Program::Program(bool graph_mode, short input_mode)
+Program::Program(short input_mode)
 {
-	this->graph_mode = graph_mode;
+	//Varialbes
 	this->oriented_graph = false;
+	this->weight_mode = false;
+	this->to_vector = false;
+	this->autoconvert = true;
 	this->current_weight = 1;
+
+	//GUI
 	this->init_window();
 	this->init_texture();
 	this->init_font();
+	
 	this->tab = Tab(this->window, &this->button_font, &this->check_box_texture);
+
+	//Dynamic elements
+	this->prepare_checkboxes();
 	this->active_edge = nullptr;
 	this->active_node = nullptr;
+	//Mode
 	switch (input_mode) {
 	case 0: is_iterational = true; break;
 	case 1: is_demonstration = true; break;

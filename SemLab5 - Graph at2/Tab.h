@@ -16,6 +16,8 @@ private:
 	Button bfs_btn;
 	Checkbox oriented_box;
 	Checkbox weight_matters;
+	Checkbox to_vector;
+	Checkbox auto_convert;
 	TextBar text_tab;
 	sf::Font* font;
 	sf::Text deco_texts[num_deco_texts];
@@ -34,6 +36,7 @@ public:
 		init_output_text();
 	}
 	sf::Vector2i get_bounds();
+	//Each button and box has its unique ID here
 	int get_button_activated(sf::Vector2f(mouse_pos)) {
 		if (this->convert_btn.is_selected(mouse_pos)) return 1;
 		if (this->clear_btn.is_selected(mouse_pos)) return 2;
@@ -41,16 +44,12 @@ public:
 		if (this->weight_matters.is_under_mouse(mouse_pos)) return 4;
 		if (this->bfs_btn.is_selected(mouse_pos)) return 5;
 		if (this->dfs_btn.is_selected(mouse_pos)) return 6;
+		if (this->to_vector.is_under_mouse(mouse_pos)) return 7;
+		if (this->auto_convert.is_under_mouse(mouse_pos)) return 8;
 		return 0;
 	}
 	void update_output_text(std::string str);
-	void update(sf::Vector2f mouse_pos) {
-		this->convert_btn.update(mouse_pos);
-		this->dfs_btn.update(mouse_pos);
-		this->bfs_btn.update(mouse_pos);
-		this->clear_btn.update(mouse_pos);
-		this->text_tab.update(mouse_pos);
-	}
+	void update(sf::Vector2f mouse_pos);
 	void render(sf::RenderTarget* target);
 	Button* convert_button();
 	Button* dfs_button();
@@ -58,6 +57,8 @@ public:
 	Button* clear_button();
 	Checkbox* oriented_check_box();
 	Checkbox* weight_box();
+	Checkbox* to_vector_box();
+	Checkbox* autoconvert_box();
 	TextBar* text_box();
 };
 

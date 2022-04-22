@@ -20,7 +20,7 @@ void Program::input()
 		{
 			was_pressed = true;
 			if (button_activated == 1) {
-				this->convert_to_structure();
+				this->convert();
 				this->tab.update_output_text("Converted!");
 			}
 			else if (button_activated == 2) {
@@ -41,6 +41,16 @@ void Program::input()
 			}
 			else if (button_activated == 6) {
 				this->dfs_structure();
+			}
+			else if (button_activated == 7) {
+				this->tab.to_vector_box()->change_state();
+				this->to_vector = tab.to_vector_box()->get_state();
+
+			}
+			else if (button_activated == 8) {
+				this->tab.autoconvert_box()->change_state();
+				this->autoconvert = tab.autoconvert_box()->get_state();
+
 			}
 		}
 	}

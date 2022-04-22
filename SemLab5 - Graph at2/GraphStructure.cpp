@@ -1,23 +1,51 @@
-#include "Program.h"
-#include "Header.h"
 
-void Program::bfs_structure() {
-	std::string to_show = "BFS: ";
-	bool visited[NODE_LIMIT] = { 0 };
-	int starter = 0;
-	if (this->selected) {
-		starter = this->selected->get_id();
+#include "Header.h"
+#include "Graphs.h"
+
+
+
+void StructGraph::add_to_structure(int id_1, int id_2, int weight)
+{
+	Graph_structure* current = nullptr;
+	if (this->graph[id_1]) {
+		current = graph[id_1];
+		if (id_2 < current->edge_to) {
+			Graph_structure* to_add = new Graph_structure(id_2, weight, current);
+			graph[id_1] = to_add;
+			return;
+		}
+		while (current->next) {
+			if (current->next->edge_to < id_2) {
+				current->next = new Graph_structure(id_2, weight, current->next);
+				return;
+			}
+			current = current->next;
+		}
+		current->next = new Graph_structure(id_2, weight);
 	}
-	bfs_structure_recursive(starter, to_show, this->weight_mode, visited);
-	this->tab.update_output_text(to_show);
+	else {
+		this->graph[id_1] = new Graph_structure(id_2, weight, nullptr);
+	}
 }
 
-void Program::bfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool *visited) {
+void StructGraph::set_size(std::size_t value)
+{
+	this->size = value;
+}
+
+std::size_t StructGraph::get_size()
+{
+	return this->size;
+}
+
+
+
+void StructGraph::bfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool *visited) {
 	if (visited[current]) return;
 	visited[current] = true;
 	to_show += std::to_string(current);
 	to_show += ' ';
-	Graph_structure* current_edge = this->structed_graph.graph[current];
+	Graph_structure* current_edge = this->graph[current];
 	if (weight_mode == false) {
 		while (current_edge) {
 			bfs_structure_recursive(current_edge->edge_to, to_show, weight_mode, visited);
@@ -34,7 +62,24 @@ void Program::bfs_structure_recursive(int current, std::string& to_show, bool we
 		this->clear_structure(&sorted_by_weight);
 	}
 }
-Graph_structure* Program::sort_by_weight(Graph_structure* beginning) {
+
+void StructGraph::clear() {
+	for (int i = 0; i < this->size; i++) {
+		this->clear_structure(&this->graph[i]);
+	}
+}
+void StructGraph::clear_structure(Graph_structure** to_clear)
+{
+	Graph_structure* current = (*to_clear);
+	Graph_structure* to_delete;
+	while (current) {
+		to_delete = current;
+		current = current->next;
+		delete to_delete;
+	}
+	(*to_clear) = nullptr;
+}
+Graph_structure* StructGraph::sort_by_weight(Graph_structure* beginning) {
 	Graph_structure* weights = nullptr;
 	Graph_structure* current_edge = beginning;
 	while (current_edge) { // sort by weights
@@ -61,7 +106,7 @@ Graph_structure* Program::sort_by_weight(Graph_structure* beginning) {
 	}
 	return weights;
 }
-Graph_structure* Program::gen_queue(Graph_structure* beginning, bool* visited)
+Graph_structure* StructGraph::gen_queue(Graph_structure* beginning, bool* visited)
 {
 	Graph_structure* to_return = nullptr;
 	Graph_structure* current_edge = beginning;
@@ -83,25 +128,16 @@ Graph_structure* Program::gen_queue(Graph_structure* beginning, bool* visited)
 	}
 	return to_return;
 }
-void Program::pop_from_queue(Graph_structure** from)
+void StructGraph::pop_from_queue(Graph_structure** from)
 {
 	Graph_structure* to_pop = (*from);
 	(*from) = (*from)->next;
 	delete to_pop;
 }
-void Program::dfs_structure() {
-	std::string to_show = "DFS: ";
-	int starter = 0;
-	bool visited[NODE_LIMIT] = { 0 };
-	if (this->selected) {
-		starter = this->selected->get_id();
-	}
-	dfs_structure_recursive(starter, to_show, this->weight_mode, visited);
-	this->tab.update_output_text(to_show);
-}
 
-void Program::dfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool* visited) {
-	Graph_structure* current_edge = this->structed_graph.graph[current];
+
+void StructGraph::dfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool* visited) {
+	Graph_structure* current_edge = this->graph[current];
 	if (visited[current] == false)
 	{
 		to_show += std::to_string(current);

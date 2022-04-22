@@ -14,15 +14,16 @@ private:
 	void convert_to_vector();
 	void convert_to_structure();
 	void clear_structure();
-	void clear_structure(Graph_structure** to_clear);
-	void add_to_structure(int id_1, int id_2, int weight);
+	void convert();
 
 	sf::RenderWindow* window;
 	sf::Clock clock;
 	const float min_delay = 0.25f;
 	float delta_time;
-	bool oriented_graph;
-	bool weight_mode;
+	bool oriented_graph = false;
+	bool weight_mode = false;
+	bool to_vector = false;
+	bool autoconvert = true;
 	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
@@ -44,7 +45,6 @@ private:
 	Node* active_node;
 	Edge* active_edge;
 	void poll_events();
-	bool graph_mode;
 	bool is_iterational;
 	bool is_demonstration;
 	bool is_benchmark;
@@ -64,6 +64,7 @@ private:
 	void clear_list();
 	void update_current_weight();
 	void establish_edge();
+	void prepare_checkboxes();
 	Node* is_over_node();
 	Node* is_over_node(Node* exception);
 	sf::Vector2f mouse_position();
@@ -74,18 +75,13 @@ private:
 	void delete_mode();
 	void put_new_edge();
 
-	//Put them in structure class???? :
 	void bfs_structure();
-	void bfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool *visited);
 	void dfs_structure();
-	void dfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool* visited);
-	Graph_structure* sort_by_weight(Graph_structure* beginning);
+
 	bool edge_exists(Node* from, Node* to);
-	Graph_structure* gen_queue(Graph_structure* beginning, bool* visited);
-	void pop_from_queue(Graph_structure** from);
 
 public:
-	Program(bool graph_mode, short input_mode);
+	Program(short input_mode);
 	~Program();
 	const bool get_window_opened() const;
 	void update();
