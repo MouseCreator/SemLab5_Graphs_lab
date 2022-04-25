@@ -84,7 +84,7 @@ void Edge::install_text(sf::Vector2f pos, float rotation)
 	float real_rotation = rotation + 90;
 	sf::Vector2f new_position = sf::Vector2f((pos.x + this->beginning->get_position().x ) / 2.f,
 		(this->beginning->get_position().y + pos.y) / 2.f);
-	sf::Vector2f circle_offset = calculate_circle_offset(15.f, real_rotation, 5.f);
+	sf::Vector2f circle_offset = calculate_circle_offset(15.f + this->text.getGlobalBounds().width, real_rotation, 5.f);
 	new_position += circle_offset;
 	this->text.setPosition(new_position);
 }

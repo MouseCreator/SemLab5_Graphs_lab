@@ -33,6 +33,7 @@ class TextBar : public Button
 {
 private:
 	bool is_active = false;
+	int max_chars = 12;
 	std::string my_text;
 public:
 	TextBar() {}
@@ -59,7 +60,8 @@ public:
 			push_text(ch);
 	}
 	void push_text(char ch) {
-		my_text += ch;
+		if (my_text.length() < max_chars)
+			my_text += ch;
 		this->set_text(my_text + '|');
 	}
 	void add_column() {

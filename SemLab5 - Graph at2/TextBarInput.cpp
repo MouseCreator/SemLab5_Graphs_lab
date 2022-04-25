@@ -15,6 +15,7 @@ bool Program::text_bar_input() {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) { this->tab.text_box()->update_text('7'); waiting = true; }
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) { this->tab.text_box()->update_text('8'); waiting = true; }
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) { this->tab.text_box()->update_text('9'); waiting = true; }
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Dash)) { this->tab.text_box()->update_text('-'); waiting = true; }
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) { this->tab.text_box()->update_text(-1); waiting = true; }
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 			update_current_weight(); 
@@ -33,6 +34,7 @@ bool Program::text_bar_input() {
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Num7) or
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Num8) or
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Num9) or
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Dash) or
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
 			time_passed += this->delta_time;
 			if (time_passed > min_delay) {

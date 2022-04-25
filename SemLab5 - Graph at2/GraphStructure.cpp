@@ -1,5 +1,4 @@
 
-#include "Header.h"
 #include "Graphs.h"
 
 
@@ -94,7 +93,7 @@ Graph_structure* StructGraph::sort_by_weight(Graph_structure* beginning) {
 			}
 			else
 			{
-				while (weights->next and weights->next->weight > to_add->weight) {
+				while (weights->next and weights->next->weight <= to_add->weight) {
 					weights = weights->next;
 				}
 				Graph_structure* temp = weights->next;
