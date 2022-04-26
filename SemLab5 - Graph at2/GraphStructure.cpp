@@ -39,7 +39,7 @@ std::size_t StructGraph::get_size()
 
 
 
-void StructGraph::bfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool *visited) {
+void StructGraph::dfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool *visited) {
 	if (visited[current]) return;
 	visited[current] = true;
 	to_show += std::to_string(current);
@@ -47,7 +47,7 @@ void StructGraph::bfs_structure_recursive(int current, std::string& to_show, boo
 	Graph_structure* current_edge = this->graph[current];
 	if (weight_mode == false) {
 		while (current_edge) {
-			bfs_structure_recursive(current_edge->edge_to, to_show, weight_mode, visited);
+			dfs_structure_recursive(current_edge->edge_to, to_show, weight_mode, visited);
 			current_edge = current_edge->next;
 		}
 	}
@@ -55,10 +55,20 @@ void StructGraph::bfs_structure_recursive(int current, std::string& to_show, boo
 		Graph_structure* sorted_by_weight = sort_by_weight(current_edge);
 		current_edge = sorted_by_weight;
 		while (current_edge) {
-			bfs_structure_recursive(current_edge->edge_to, to_show, weight_mode, visited);
+			dfs_structure_recursive(current_edge->edge_to, to_show, weight_mode, visited);
 			current_edge = current_edge->next;
 		}
 		this->clear_structure(&sorted_by_weight);
+	}
+}
+
+void StructGraph::bfs_structure_recursive(int current, bool* visited) {
+	if (visited[current]) return;
+	visited[current] = true;
+	Graph_structure* current_edge = this->graph[current];
+	while (current_edge) {
+		bfs_structure_recursive(current_edge->edge_to, visited);
+		current_edge = current_edge->next;
 	}
 }
 
@@ -105,7 +115,7 @@ Graph_structure* StructGraph::sort_by_weight(Graph_structure* beginning) {
 	}
 	return weights;
 }
-Graph_structure* StructGraph::gen_queue(Graph_structure* beginning, bool* visited)
+Graph_structure* StructGraph::gen_queue(Graph_structure* beginning, bool* visited, int parent = -1, bool* found_cycle = nullptr)
 {
 	Graph_structure* to_return = nullptr;
 	Graph_structure* current_edge = beginning;
@@ -123,6 +133,11 @@ Graph_structure* StructGraph::gen_queue(Graph_structure* beginning, bool* visite
 				current->next = new Graph_structure(current_edge->edge_to, current_edge->weight);
 			}
 		}
+		else {
+			if (found_cycle and current_edge->edge_to != parent) {
+				(*found_cycle) = true;
+			}
+		}
 		current_edge = current_edge->next;
 	}
 	return to_return;
@@ -135,7 +150,7 @@ void StructGraph::pop_from_queue(Graph_structure** from)
 }
 
 
-void StructGraph::dfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool* visited) {
+void StructGraph::bfs_structure_recursive(int current, std::string& to_show, bool weight_mode, bool* visited) {
 	Graph_structure* current_edge = this->graph[current];
 	if (visited[current] == false)
 	{
@@ -155,9 +170,94 @@ void StructGraph::dfs_structure_recursive(int current, std::string& to_show, boo
 		element = element->next;
 	}
 	while (queue) {
-		dfs_structure_recursive(queue->edge_to, to_show, weight_mode, visited);
+		bfs_structure_recursive(queue->edge_to, to_show, weight_mode, visited);
 		pop_from_queue(&queue);
 	}
 	
+
+}
+
+void StructGraph::bfs_cycle_structure_recursive(int current, bool* visited, int parent, bool* to_change = nullptr) {
+	Graph_structure* current_edge = this->graph[current];
+	if (visited[current] == false)
+	{
+		visited[current] = true;
+	}
+	Graph_structure* queue = gen_queue(current_edge, visited, parent, to_change);
+	if ((*to_change) == true) {
+		this->clear_structure(&queue);
+		return;
+	}
+	Graph_structure* element = queue;
+	while (element) {
+		visited[element->edge_to] = true;
+		element = element->next;
+	}
+	while (queue) {
+		bfs_cycle_structure_recursive(queue->edge_to, visited, current, to_change);
+		pop_from_queue(&queue);
+	}
+
+}
+void StructGraph::dfs_oriented_cycle(int start_with, bool* to_change) {
+	std::vector<int> visited;
+	dfs_oriented_cycle_recursive(start_with, visited, to_change);
+}
+void StructGraph::dfs_oriented_cycle_recursive(int current, std::vector<int> visited, bool* to_change) {
+	Graph_structure* current_edge = this->graph[current];
+	bool is_new = true;
+	for (std::size_t i = 0; i < visited.size(); i++) {
+		if (visited[i] == current) {
+			is_new = false;
+			break;
+		}
+	}
+	if (is_new == false) {
+		(*to_change) = true;
+		return;
+	}
+	else {
+		visited.emplace_back(current);
+		while (current_edge) {
+			dfs_oriented_cycle_recursive(current_edge->edge_to, visited, to_change);
+			current_edge = current_edge->next;
+		}
+		visited.pop_back();
+	}
+	
+}
+
+
+bool StructGraph::component_detection(int current, bool* visited, bool oriented, std::vector<int>& heads, int has_component = -1) {
+	Graph_structure* current_edge = this->graph[current];
+	if (visited[current] and oriented and has_component != -1) {
+		for (int i = 0; i < heads.size() - 1; i++) {
+			if (heads[i] == current)
+			{
+				heads[i] = has_component;
+				heads.pop_back();
+			}
+		}
+	}
+	int component = has_component;
+	if (visited[current] == false)
+	{
+		visited[current] = true;
+	}
+	else {
+		return true;
+	}
+	if (has_component == -1) {
+		heads.emplace_back(current);
+		component = current;
+	}
+	
+	while (current_edge) {
+		component_detection(current_edge->edge_to, visited, oriented, heads, component);
+		current_edge = current_edge->next;
+	}
+
+
+	return false;
 
 }

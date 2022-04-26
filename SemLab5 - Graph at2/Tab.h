@@ -14,6 +14,9 @@ private:
 	Button clear_btn;
 	Button dfs_btn;
 	Button bfs_btn;
+	Button connected_btn;
+	Button cycle_btn;
+	Button component_btn;
 	Checkbox oriented_box;
 	Checkbox weight_matters;
 	Checkbox to_vector;
@@ -46,6 +49,9 @@ public:
 		if (this->dfs_btn.is_selected(mouse_pos)) return 6;
 		if (this->to_vector.is_under_mouse(mouse_pos)) return 7;
 		if (this->auto_convert.is_under_mouse(mouse_pos)) return 8;
+		if (this->connected_btn.is_selected(mouse_pos)) return 9;
+		if (this->cycle_btn.is_selected(mouse_pos)) return 10;
+		if (this->component_btn.is_selected(mouse_pos)) return 11;
 		return 0;
 	}
 	void update_output_text(std::string str);
@@ -55,6 +61,9 @@ public:
 	Button* dfs_button();
 	Button* bfs_button();
 	Button* clear_button();
+	Button* cycle_button();
+	Button* component_button();
+	Button* connected_button();
 	Checkbox* oriented_check_box();
 	Checkbox* weight_box();
 	Checkbox* to_vector_box();

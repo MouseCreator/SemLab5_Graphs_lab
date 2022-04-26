@@ -8,8 +8,7 @@
 class Program
 {
 private:
-	unsigned graph_vector[NODE_LIMIT];
-	int weights[NODE_LIMIT][NODE_LIMIT];
+	BitGraph bitgraph;
 	StructGraph structed_graph;
 	void convert_to_vector();
 	void convert_to_structure();
@@ -77,7 +76,11 @@ private:
 
 	void bfs_structure();
 	void dfs_structure();
-
+	void buttons_input(int id);
+	bool connected_structure(bool print_result);
+	bool has_cycle(bool print_result);
+	void components_structure_show();
+	void components_structure(std::vector<int>& component_heads);
 	bool edge_exists(Node* from, Node* to);
 
 public:

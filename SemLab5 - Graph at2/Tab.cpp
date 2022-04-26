@@ -12,7 +12,12 @@ void Tab::init_buttons(sf::Font* button_font, sf::Texture* check_box_texture) {
 	this->bfs_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "BFS", button_font);
 	tab_offset += distance_between_btns;
 	this->dfs_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "DFS", button_font);
-
+	tab_offset += distance_between_btns;
+	this->connected_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "Connected", button_font);
+	tab_offset += distance_between_btns;
+	this->cycle_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "Cycled", button_font);
+	tab_offset = sf::Vector2f(240.f, 20.f);
+	this->component_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "Components", button_font);
 
 	tab_offset = sf::Vector2f(100.f, 20.f);
 	this->text_tab = TextBar(beginning + tab_offset, sf::Vector2f(128, 32), "Enter weight", button_font);
@@ -66,6 +71,9 @@ void Tab::update(sf::Vector2f mouse_pos) {
 	this->dfs_btn.update(mouse_pos);
 	this->bfs_btn.update(mouse_pos);
 	this->clear_btn.update(mouse_pos);
+	this->component_btn.update(mouse_pos);
+	this->connected_btn.update(mouse_pos);
+	this->cycle_btn.update(mouse_pos);
 	this->text_tab.update(mouse_pos);
 }
 sf::Vector2i Tab::get_bounds()
@@ -75,7 +83,7 @@ sf::Vector2i Tab::get_bounds()
 
 void Tab::init_background(sf::RenderWindow* window)
 {
-	float width = 284.f;
+	float width = 320.f;
 	float height = 284.f;
 	this->background.setFillColor(sf::Color(200, 200, 255));
 	this->background.setPosition(window->getSize().x - width, window->getSize().y - height);
@@ -100,7 +108,7 @@ void Tab::init_output_text()
 }
 void Tab::update_output_text(std::string str)
 {
-	const int max_char_in_a_row = 60;
+	const int max_char_in_a_row = 40;
 	int length = 0;
 	int current_char = 0;
 	std::string to_set;
@@ -135,6 +143,9 @@ void Tab::render(sf::RenderTarget* target) {
 	this->bfs_btn.render(target);
 	this->dfs_btn.render(target);
 	this->clear_btn.render(target);
+	this->connected_btn.render(target);
+	this->cycle_btn.render(target);
+	this->component_btn.render(target);
 	for (int i = 0; i < num_deco_texts; i++) {
 		target->draw(deco_texts[i]);
 	}
@@ -160,6 +171,18 @@ Button* Tab::bfs_button()
 Button* Tab::clear_button()
 {
 	return &this->clear_btn;
+}
+Button* Tab::connected_button()
+{
+	return &this->connected_btn;
+}
+Button* Tab::component_button()
+{
+	return &this->component_btn;
+}
+Button* Tab::cycle_button()
+{
+	return &this->cycle_btn;
 }
 Checkbox* Tab::oriented_check_box() {
 	return &this->oriented_box;

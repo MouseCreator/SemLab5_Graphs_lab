@@ -19,39 +19,7 @@ void Program::input()
 		if (was_pressed == false)
 		{
 			was_pressed = true;
-			if (button_activated == 1) {
-				this->convert();
-				this->tab.update_output_text("Converted!");
-			}
-			else if (button_activated == 2) {
-				this->clear_canvas();
-			}
-			else if (button_activated == 3) {
-				this->tab.oriented_check_box()->change_state();
-				this->oriented_graph = tab.oriented_check_box()->get_state();
-					
-			}
-			else if (button_activated == 4) {
-				this->tab.weight_box()->change_state();
-				this->weight_mode = tab.weight_box()->get_state();
-
-			}
-			else if (button_activated == 5) {
-				this->bfs_structure();
-			}
-			else if (button_activated == 6) {
-				this->dfs_structure();
-			}
-			else if (button_activated == 7) {
-				this->tab.to_vector_box()->change_state();
-				this->to_vector = tab.to_vector_box()->get_state();
-
-			}
-			else if (button_activated == 8) {
-				this->tab.autoconvert_box()->change_state();
-				this->autoconvert = tab.autoconvert_box()->get_state();
-
-			}
+			buttons_input(button_activated);
 		}
 	}
 	if (mouse.isButtonPressed(sf::Mouse::Left) == false) {
@@ -191,5 +159,51 @@ void Program::add_mode() {
 	}
 	if (this->active_edge) {
 		this->active_edge->installation(this->mouse.getPosition(*this->window));
+	}
+}
+
+void Program::buttons_input(int button_activated = 0) {
+	if (button_activated == 0) return;
+	else if (button_activated == 1) {
+		this->convert();
+		this->tab.update_output_text("Converted!");
+	}
+	else if (button_activated == 2) {
+		this->clear_canvas();
+	}
+	else if (button_activated == 3) {
+		this->tab.oriented_check_box()->change_state();
+		this->oriented_graph = tab.oriented_check_box()->get_state();
+
+	}
+	else if (button_activated == 4) {
+		this->tab.weight_box()->change_state();
+		this->weight_mode = tab.weight_box()->get_state();
+
+	}
+	else if (button_activated == 5) {
+		this->bfs_structure();
+	}
+	else if (button_activated == 6) {
+		this->dfs_structure();
+	}
+	else if (button_activated == 7) {
+		this->tab.to_vector_box()->change_state();
+		this->to_vector = tab.to_vector_box()->get_state();
+
+	}
+	else if (button_activated == 8) {
+		this->tab.autoconvert_box()->change_state();
+		this->autoconvert = tab.autoconvert_box()->get_state();
+
+	}
+	else if (button_activated == 9) {
+		this->connected_structure(true);
+	}
+	else if (button_activated == 10) {
+		this->has_cycle(true);
+	}
+	else if (button_activated == 11) {
+		this->components_structure_show();
 	}
 }
