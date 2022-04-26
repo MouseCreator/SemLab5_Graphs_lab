@@ -148,6 +148,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main_Graph_Functions.cpp" />
+    <ClCompile Include="Main_Vector_Functions.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Tab.cpp" />

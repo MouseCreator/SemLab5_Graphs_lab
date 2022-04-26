@@ -10,10 +10,7 @@ class Program
 private:
 	BitGraph bitgraph;
 	StructGraph structed_graph;
-	void convert_to_vector();
-	void convert_to_structure();
-	void clear_structure();
-	void convert();
+
 
 	sf::RenderWindow* window;
 	sf::Clock clock;
@@ -74,6 +71,11 @@ private:
 	void delete_mode();
 	void put_new_edge();
 
+	void convert_to_vector();
+	void convert_to_structure();
+	void clear_structure();
+	void convert();
+	//Call functions for structure
 	void bfs_structure();
 	void dfs_structure();
 	void buttons_input(int id);
@@ -82,6 +84,10 @@ private:
 	void components_structure_show();
 	void components_structure(std::vector<int>& component_heads);
 	bool edge_exists(Node* from, Node* to);
+
+	//Call functions for vector
+	void dfs_vector();
+	void bfs_vector();
 
 public:
 	Program(short input_mode);

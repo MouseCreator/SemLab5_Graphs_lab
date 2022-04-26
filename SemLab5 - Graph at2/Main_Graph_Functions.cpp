@@ -1,9 +1,5 @@
 #include "Program.h"
 
-void Program::convert_to_vector()
-{
-}
-
 void Program::convert_to_structure() {
 	List_edges* current = this->all_edges;
 	int id_1 = 0;
@@ -48,7 +44,7 @@ void Program::bfs_structure() {
 	if (this->selected) {
 		starter = this->selected->get_id();
 	}
-	for (std::size_t i = 0; i < this->structed_graph.get_size(); i++)
+	if (this->structed_graph.get_size() > 0)
 	{
 		this->structed_graph.bfs_structure_recursive(starter, to_show, this->weight_mode, visited);
 	}

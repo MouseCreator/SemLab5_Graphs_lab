@@ -182,10 +182,16 @@ void Program::buttons_input(int button_activated = 0) {
 
 	}
 	else if (button_activated == 5) {
-		this->bfs_structure();
+		if (this->to_vector)
+			this->bfs_vector();
+		else
+			this->bfs_structure();
 	}
 	else if (button_activated == 6) {
-		this->dfs_structure();
+		if (this->to_vector)
+			this->dfs_vector();
+		else
+			this->dfs_structure();
 	}
 	else if (button_activated == 7) {
 		this->tab.to_vector_box()->change_state();
