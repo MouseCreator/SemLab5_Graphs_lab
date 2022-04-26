@@ -5,6 +5,14 @@ void Program::input()
 	static float delay = 0.f;
 	static bool was_pressed = false;
 	if (text_bar_input()) return;
+	if (mouse.isButtonPressed(sf::Mouse::Left) and is_selecting) {
+		if (was_pressed == false)
+		{
+			this->stop_selection();
+		}
+		was_pressed = true;
+		return;
+	}
 	if (mouse.isButtonPressed(sf::Mouse::Left) and mouse_on_screen() and this->window->hasFocus() and this->using_ui()) {
 		if (this->active_node) {
 			this->active_node->move(this->last_position);
@@ -37,7 +45,8 @@ void Program::input()
 		}
 		else
 		{
-			this->add_mode();
+			if (!was_pressed)
+				this->add_mode();
 		}
 	}
 	else
@@ -211,5 +220,27 @@ void Program::buttons_input(int button_activated = 0) {
 	}
 	else if (button_activated == 11) {
 		this->components_structure_show();
+	}
+	else if (button_activated == 12) {
+		this->start_selection();
+	}
+}
+
+void Program::start_selection() {
+	this->is_selecting = true;
+	this->cursor.loadFromSystem(sf::Cursor::Cross);
+	this->window->setMouseCursor(cursor);
+}
+void Program::stop_selection() {
+	this->is_selecting = false;
+	this->cursor.loadFromSystem(sf::Cursor::Arrow);
+	this->window->setMouseCursor(cursor);
+	if (this->selected) {
+		this->selected->change_color(false);
+	}
+	this->selected = is_over_node();
+	if (this->selected)
+	{
+		this->selected->change_color(true);
 	}
 }

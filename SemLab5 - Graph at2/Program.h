@@ -20,6 +20,7 @@ private:
 	bool weight_mode = false;
 	bool to_vector = false;
 	bool autoconvert = true;
+	bool is_selecting = false;
 	int current_weight;
 	struct List_edges {
 		List_edges* next = nullptr;
@@ -32,6 +33,7 @@ private:
 	
 	sf::VideoMode video_mode;
 	sf::Mouse mouse;
+	sf::Cursor cursor;
 	sf::Font font;
 	sf::Font button_font;
 	sf::Texture arrow_texture;
@@ -88,6 +90,9 @@ private:
 	//Call functions for vector
 	void dfs_vector();
 	void bfs_vector();
+	//Select node
+	void start_selection();
+	void stop_selection();
 
 public:
 	Program(short input_mode);

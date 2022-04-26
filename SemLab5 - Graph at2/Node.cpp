@@ -32,6 +32,12 @@ float Node::calculate_dist_to_mouse(sf::Vector2i mouse_position)
 	return sqrt(delta_x + delta_y);
 }
 
+void Node::change_color(bool is_selected)
+{
+	if (is_selected) this->shape.setFillColor(sf::Color(30, 180, 255));
+	else this->shape.setFillColor(sf::Color::Blue);
+}
+
 Node::~Node()
 {
 }

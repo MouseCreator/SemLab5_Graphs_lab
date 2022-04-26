@@ -27,9 +27,15 @@ void Program::dfs_structure() {
 	if (this->selected) {
 		starter = this->selected->get_id();
 	}
-	if (this->structed_graph.get_size() > 0)
+	std::size_t size = this->structed_graph.get_size();
+	if (size > 0)
 	{
-		this->structed_graph.dfs_structure_recursive(starter, to_show, this->weight_mode, visited);
+		this->structed_graph.bfs_structure_recursive(starter, to_show, this->weight_mode, visited);
+		for (std::size_t i = 0; i < size; i++) {
+			if (visited[i] == false) {
+				this->structed_graph.dfs_structure_recursive(i, to_show, this->weight_mode, visited);
+			}
+		}
 	}
 	this->tab.update_output_text(to_show);
 }
@@ -44,9 +50,15 @@ void Program::bfs_structure() {
 	if (this->selected) {
 		starter = this->selected->get_id();
 	}
-	if (this->structed_graph.get_size() > 0)
+	std::size_t size = this->structed_graph.get_size();
+	if (size > 0)
 	{
 		this->structed_graph.bfs_structure_recursive(starter, to_show, this->weight_mode, visited);
+		for (std::size_t i = 0; i < size; i++) {
+			if (visited[i] == false) {
+				this->structed_graph.bfs_structure_recursive(i, to_show, this->weight_mode, visited);
+			}
+		}
 	}
 	this->tab.update_output_text(to_show);
 }

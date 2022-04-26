@@ -18,6 +18,8 @@ void Tab::init_buttons(sf::Font* button_font, sf::Texture* check_box_texture) {
 	this->cycle_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "Cycled", button_font);
 	tab_offset = sf::Vector2f(240.f, 20.f);
 	this->component_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "Components", button_font);
+	tab_offset += distance_between_btns;
+	this->select_btn = Button(beginning + tab_offset, sf::Vector2f(72, 20), "Select", button_font);
 
 	tab_offset = sf::Vector2f(100.f, 20.f);
 	this->text_tab = TextBar(beginning + tab_offset, sf::Vector2f(128, 32), "Enter weight", button_font);
@@ -71,6 +73,7 @@ void Tab::update(sf::Vector2f mouse_pos) {
 	this->dfs_btn.update(mouse_pos);
 	this->bfs_btn.update(mouse_pos);
 	this->clear_btn.update(mouse_pos);
+	this->select_btn.update(mouse_pos);
 	this->component_btn.update(mouse_pos);
 	this->connected_btn.update(mouse_pos);
 	this->cycle_btn.update(mouse_pos);
@@ -136,6 +139,21 @@ void Tab::update_output_text(std::string str)
 	this->output_text.setString(to_set);
 
 }
+int Tab::get_button_activated(sf::Vector2f(mouse_pos)) {
+	if (this->convert_btn.is_selected(mouse_pos)) return 1;
+	if (this->clear_btn.is_selected(mouse_pos)) return 2;
+	if (this->oriented_box.is_under_mouse(mouse_pos)) return 3;
+	if (this->weight_matters.is_under_mouse(mouse_pos)) return 4;
+	if (this->bfs_btn.is_selected(mouse_pos)) return 5;
+	if (this->dfs_btn.is_selected(mouse_pos)) return 6;
+	if (this->to_vector.is_under_mouse(mouse_pos)) return 7;
+	if (this->auto_convert.is_under_mouse(mouse_pos)) return 8;
+	if (this->connected_btn.is_selected(mouse_pos)) return 9;
+	if (this->cycle_btn.is_selected(mouse_pos)) return 10;
+	if (this->component_btn.is_selected(mouse_pos)) return 11;
+	if (this->select_btn.is_selected(mouse_pos)) return 12;
+	return 0;
+}
 void Tab::render(sf::RenderTarget* target) {
 	target->draw(this->background);
 	target->draw(this->output_bg);
@@ -145,6 +163,7 @@ void Tab::render(sf::RenderTarget* target) {
 	this->clear_btn.render(target);
 	this->connected_btn.render(target);
 	this->cycle_btn.render(target);
+	this->select_btn.render(target);
 	this->component_btn.render(target);
 	for (int i = 0; i < num_deco_texts; i++) {
 		target->draw(deco_texts[i]);
@@ -175,6 +194,10 @@ Button* Tab::clear_button()
 Button* Tab::connected_button()
 {
 	return &this->connected_btn;
+}
+Button* Tab::select_button()
+{
+	return &this->select_btn;
 }
 Button* Tab::component_button()
 {

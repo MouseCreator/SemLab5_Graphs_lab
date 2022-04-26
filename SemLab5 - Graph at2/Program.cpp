@@ -24,6 +24,7 @@ void Program::init_window()
 	this->video_mode.height = 840;
 	this->window = new sf::RenderWindow(this->video_mode, "Lab5 - Graphs", sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(60);
+	this->window->setMouseCursor(this->cursor);
 }
 
 void Program::init_font()
@@ -117,12 +118,13 @@ bool Program::using_ui()
 Program::Program(short input_mode)
 {
 	//Varialbes
+	this->cursor.loadFromSystem(sf::Cursor::Arrow);
 	this->oriented_graph = false;
 	this->weight_mode = false;
 	this->to_vector = false;
 	this->autoconvert = true;
 	this->current_weight = 1;
-
+	this->is_selecting = false;
 	//GUI
 	this->init_window();
 	this->init_texture();
@@ -145,6 +147,7 @@ Program::Program(short input_mode)
 void Program::clear_canvas() {
 	this->clear_list();
 	this->nodes.clear();
+	this->selected = nullptr;
 	this->tab.oriented_check_box()->set_avaliable(true);
 }
 Program::~Program()
